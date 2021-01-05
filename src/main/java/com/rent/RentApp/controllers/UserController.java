@@ -2,7 +2,6 @@ package com.rent.RentApp.controllers;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.rent.RentApp.dtos.UserDto;
 import com.rent.RentApp.forms.UserForm;
@@ -10,8 +9,12 @@ import com.rent.RentApp.models.Users;
 import com.rent.RentApp.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,17 +32,13 @@ public class UserController {
   @Autowired
   private UserRepository repository;
 
-  /*
-   * @GetMapping public List<UserDto> listUsers() {
-   * 
-   * List<Users> users = repository.findAll();
-   * 
-   * return UserDto.convert(users); }
-   */
-
   @GetMapping
-  public List<Users> listUsers() {
-    return repository.findAll();
+  public Page<UserDto> listUsers(
+      @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 20) Pageable pagination) {
+
+    Page<Users> users = repository.findAll(pagination);
+    return UserDto.convert(users);
+
   }
 
   @PostMapping

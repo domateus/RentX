@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.rent.RentApp.forms.CarForm;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -25,6 +27,16 @@ public class Cars {
 
   @LastModifiedDate
   private Date updated_at = new Date();
+
+  public Cars() {
+    super();
+  }
+
+  public Cars(CarForm form) {
+    this.name = form.getName();
+    this.brand = form.getBrand();
+    this.daily_value = form.getDaily_value();
+  }
 
   public Long getId() {
     return id;

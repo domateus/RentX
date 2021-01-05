@@ -5,14 +5,24 @@ import java.util.stream.Collectors;
 
 import com.rent.RentApp.models.Users;
 
+import org.springframework.data.domain.Page;
+
 public class UserDto {
 
   private String name;
   private byte[] image;
+  private String email;
+  private boolean admin;
 
   public UserDto(Users user) {
     this.name = user.getName();
     this.image = user.getImage();
+    this.email = user.getEmail();
+    this.admin = user.isAdmin();
+  }
+
+  public static List<UserDto> convert(List<Users> users) {
+    return users.stream().map(UserDto::new).collect(Collectors.toList());
   }
 
   public String getName() {
@@ -31,12 +41,28 @@ public class UserDto {
     this.image = image;
   }
 
-  public static List<UserDto> convert(List<Users> users) {
-    return users.stream().map(UserDto::new).collect(Collectors.toList());
-  }
-
   public static UserDto convert(Users user) {
     return new UserDto(user);
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public boolean isAdmin() {
+    return admin;
+  }
+
+  public void setAdmin(boolean admin) {
+    this.admin = admin;
+  }
+
+  public static Page<UserDto> convert(Page<Users> users) {
+    return users.map(UserDto::new);
   }
 
 }
