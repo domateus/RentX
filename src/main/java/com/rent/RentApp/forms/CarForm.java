@@ -1,12 +1,17 @@
 package com.rent.RentApp.forms;
 
+import javax.validation.constraints.NotBlank;
+
 import com.rent.RentApp.models.Cars;
 import com.rent.RentApp.repositories.CarsRepository;
 
 public class CarForm {
 
+  @NotBlank
   private String name;
+  @NotBlank
   private String daily_value;
+  @NotBlank
   private String brand;
 
   public String getName() {

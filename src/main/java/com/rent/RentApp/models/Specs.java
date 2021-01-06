@@ -16,7 +16,7 @@ public class Specs {
   @GeneratedValue
   private Long id;
 
-  @OneToMany(fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "spec")
   private List<Cars> cars = new ArrayList<>();
 
   private String name;

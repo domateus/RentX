@@ -1,14 +1,21 @@
 package com.rent.RentApp.forms;
 
-import java.util.UUID;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.rent.RentApp.models.Users;
 import com.rent.RentApp.repositories.UserRepository;
 
 public class UserForm {
 
+  @NotBlank
   private String name;
+  @NotBlank
+  @Email(regexp = "^[a-zA-Z0-9._]+@[a-z]+(\\.[a-z]{2,6}){1,3}")
   private String email;
+  @NotBlank
+  @Size(min = 6, max = 30)
   private String password;
 
   public String getName() {

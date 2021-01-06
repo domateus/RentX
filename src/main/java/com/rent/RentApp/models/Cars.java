@@ -16,6 +16,9 @@ public class Cars {
   @GeneratedValue
   private Long id;
 
+  @ManyToOne
+  private Specs spec;
+
   private String name;
 
   private String brand;
