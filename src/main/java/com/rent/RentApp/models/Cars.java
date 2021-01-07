@@ -16,7 +16,8 @@ public class Cars {
   @GeneratedValue
   private Long id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "spec_id")
   private Specs spec;
 
   private String name;

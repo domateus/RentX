@@ -1,12 +1,14 @@
 package com.rent.RentApp.models;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PreUpdate;
 
 import com.rent.RentApp.forms.UserForm;
@@ -37,6 +39,9 @@ public class Users {
   @Column(name = "updated_at")
   @LastModifiedDate
   private Date updated_at = new Date();
+
+  @OneToMany(mappedBy = "client")
+  private Set<Rentals> rentals;
 
   protected Users() {
   };

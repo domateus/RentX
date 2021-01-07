@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.rent.RentApp.forms.SpecForm;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -36,6 +38,17 @@ public class Specs {
 
   @LastModifiedDate
   private Date updated_at = new Date();
+
+  public Specs(SpecForm form) {
+    this.name = form.getName();
+    this.description = form.getDescription();
+    this.carType = form.getCarType();
+    this.fuelType = form.getFuelType();
+  }
+
+  protected Specs() {
+    super();
+  }
 
   public Long getId() {
     return id;

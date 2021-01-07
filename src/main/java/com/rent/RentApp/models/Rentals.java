@@ -2,13 +2,17 @@ package com.rent.RentApp.models;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PreUpdate;
+
+import com.rent.RentApp.forms.RentalForm;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -20,11 +24,11 @@ public class Rentals {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "car_id")
   private Cars car;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "client_id")
   private Users client;
 
@@ -37,6 +41,15 @@ public class Rentals {
 
   @LastModifiedDate
   private Date updated_at = new Date();
+
+  protected Rentals() {
+    super();
+  }
+
+  public Rentals(RentalForm form) {
+    this.start_date = form.getStart_date();
+    this.end_date = form.getEnd_date();
+  }
 
   public Long getId() {
     return id;
