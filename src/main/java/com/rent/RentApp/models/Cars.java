@@ -18,7 +18,7 @@ public class Cars {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "spec_id")
-  private Specs spec;
+  private Specs spec = new Specs();
 
   private String name;
 
@@ -40,6 +40,15 @@ public class Cars {
     this.name = form.getName();
     this.brand = form.getBrand();
     this.daily_value = form.getDaily_value();
+    this.setSpecId(form.getSpec_id());
+  }
+
+  public void setSpecId(Long id) {
+    this.spec.setId(id);
+  }
+
+  public Long getSpecId() {
+    return this.spec.getId();
   }
 
   public Long getId() {

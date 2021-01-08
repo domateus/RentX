@@ -3,7 +3,6 @@ package com.rent.RentApp.forms;
 import javax.validation.constraints.NotBlank;
 
 import com.rent.RentApp.models.Cars;
-import com.rent.RentApp.repositories.CarsRepository;
 
 public class CarForm {
 
@@ -13,6 +12,7 @@ public class CarForm {
   private String daily_value;
   @NotBlank
   private String brand;
+  private Long spec_id;
 
   public String getName() {
     return name;
@@ -38,14 +38,22 @@ public class CarForm {
     this.brand = brand;
   }
 
-  public Cars update(Long id, CarsRepository carsRepository) {
-    Cars car = carsRepository.getOne(id);
+  public Cars update(Cars car) {
 
     car.setName(this.name);
     car.setBrand(this.brand);
     car.setDaily_value(this.daily_value);
+    car.setSpecId(this.spec_id);
 
     return car;
+  }
+
+  public Long getSpec_id() {
+    return spec_id;
+  }
+
+  public void setSpec_id(Long spec_id) {
+    this.spec_id = spec_id;
   }
 
 }

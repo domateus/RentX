@@ -18,9 +18,6 @@ public class Specs {
   @GeneratedValue
   private Long id;
 
-  @OneToMany(mappedBy = "spec")
-  private List<Cars> cars = new ArrayList<>();
-
   private String name;
 
   private String description;
@@ -46,7 +43,7 @@ public class Specs {
     this.fuelType = form.getFuelType();
   }
 
-  protected Specs() {
+  public Specs() {
     super();
   }
 
@@ -56,14 +53,6 @@ public class Specs {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public List<Cars> getCars() {
-    return cars;
-  }
-
-  public void setCars(List<Cars> cars) {
-    this.cars = cars;
   }
 
   public String getName() {
