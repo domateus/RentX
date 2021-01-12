@@ -1,7 +1,8 @@
 package com.rent.RentApp.models;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 
 import com.rent.RentApp.forms.UserForm;
@@ -41,7 +43,7 @@ public class Users {
   private Date updated_at = new Date();
 
   @OneToMany(mappedBy = "client")
-  private Set<Rentals> rentals;
+  private List<Rentals> rentals = new ArrayList<Rentals>();
 
   protected Users() {
   };
@@ -115,6 +117,18 @@ public class Users {
   @PreUpdate
   public void setUpdated_at() {
     this.updated_at = new Date();
+  }
+
+  @PreRemove
+  public void preRemove() {
+    for (Rentals rental : rentals) {
+      rental.setClient(null);
+    }
+  }
+
+  public void addRental(Rentals rental) {
+    this.rentals.add(rental);
+
   }
 
 }

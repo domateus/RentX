@@ -1,12 +1,8 @@
 package com.rent.RentApp.controllers;
 
+import com.rent.RentApp.dtos.RentalDto;
 import com.rent.RentApp.forms.RentalForm;
-import com.rent.RentApp.models.Cars;
-import com.rent.RentApp.models.Rentals;
-import com.rent.RentApp.models.Users;
-import com.rent.RentApp.repositories.CarsRepository;
-import com.rent.RentApp.repositories.RentalsRepository;
-import com.rent.RentApp.repositories.UserRepository;
+import com.rent.RentApp.services.Rentals.RentalService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,53 +25,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class RentalsController {
 
   @Autowired
-  private RentalsRepository repository;
-
-  @Autowired
-  private CarsRepository carsRepository;
-
-  @Autowired
-  private UserRepository userRepository;
+  private RentalService rentalService;
 
   @GetMapping
-  public Page<Rentals> listRentals(
+  public Page<RentalDto> listRentals(
       @PageableDefault(sort = "start_date", direction = Direction.ASC, size = 20, page = 0) Pageable pagination) {
-
-    Page<Rentals> rentals = this.repository.findFetchedRentals(pagination);
+    Page<RentalDto> rentals = this.rentalService.findPages(pagination);
 
     return rentals;
-
   }
 
   @PostMapping
-  public Rentals createRental(@RequestBody RentalForm form) {
-    Cars car = carsRepository.findById(form.getCar_id()).get();
-    Users client = userRepository.findById(form.getClient_id()).get();
-
-    Rentals rental = new Rentals(form);
-
-    rental.setCar(car);
-    rental.setClient(client);
-
-    repository.save(rental);
+  public RentalDto createRental(@RequestBody RentalForm form) {
+    RentalDto rental = this.rentalService.create(form);
 
     return rental;
   }
 
   @PutMapping("/{id}")
-  public Rentals updateRental(@RequestBody RentalForm form, @PathVariable Long id) {
-    Cars car = carsRepository.findById(form.getCar_id()).get();
-    Users client = userRepository.findById(form.getClient_id()).get();
-
-    Rentals rental = repository.findFetchById(id).get();
-
-    rental.setStart_date(form.getStart_date());
-    rental.setEnd_date(form.getEnd_date());
-
-    rental.setCar(car);
-    rental.setClient(client);
-
-    repository.save(rental);
+  public RentalDto updateRental(@RequestBody RentalForm form, @PathVariable Long id) {
+    RentalDto rental = this.rentalService.update(form, id);
 
     return rental;
   }
@@ -83,7 +52,7 @@ public class RentalsController {
   @DeleteMapping("/{id}")
   @ResponseStatus(code = HttpStatus.NO_CONTENT)
   public void deleteRental(@PathVariable Long id) {
-    repository.deleteById(id);
+    this.rentalService.delete(id);
   }
 
 }

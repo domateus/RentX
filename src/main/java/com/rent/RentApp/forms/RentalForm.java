@@ -2,12 +2,25 @@ package com.rent.RentApp.forms;
 
 import java.util.Date;
 
+import com.rent.RentApp.models.Cars;
+import com.rent.RentApp.models.Rentals;
+import com.rent.RentApp.models.Users;
+
 public class RentalForm {
 
   private Long car_id;
   private Long client_id;
   private Date start_date;
   private Date end_date;
+
+  public Rentals update(Rentals rental, Cars car, Users client) {
+    rental.setCar(car);
+    rental.setClient(client);
+    rental.setEnd_date(end_date);
+    rental.setStart_date(start_date);
+
+    return rental;
+  }
 
   public Long getCar_id() {
     return car_id;

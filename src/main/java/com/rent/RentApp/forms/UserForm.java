@@ -5,7 +5,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.rent.RentApp.models.Users;
-import com.rent.RentApp.repositories.UserRepository;
 
 public class UserForm {
 
@@ -42,8 +41,7 @@ public class UserForm {
     this.password = password;
   }
 
-  public Users update(Long id, UserRepository repository) {
-    Users user = repository.getOne(id);
+  public Users update(Users user) {
 
     user.setName(this.name);
     user.setEmail(this.email);

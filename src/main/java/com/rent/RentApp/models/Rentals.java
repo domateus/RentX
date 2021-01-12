@@ -24,7 +24,7 @@ public class Rentals {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "car_id")
   private Cars car;
 
@@ -49,6 +49,14 @@ public class Rentals {
   public Rentals(RentalForm form) {
     this.start_date = form.getStart_date();
     this.end_date = form.getEnd_date();
+  }
+
+  public boolean hasCar() {
+    return (this.car != null) ? true : false;
+  }
+
+  public boolean hasClient() {
+    return (this.client != null) ? true : false;
   }
 
   public Long getId() {

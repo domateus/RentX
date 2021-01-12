@@ -1,6 +1,8 @@
 package com.rent.RentApp.models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -31,6 +33,9 @@ public class Cars {
 
   @LastModifiedDate
   private Date updated_at = new Date();
+
+  @OneToMany(mappedBy = "car")
+  private List<Rentals> rentals = new ArrayList<Rentals>();
 
   public Cars() {
     super();
@@ -112,5 +117,16 @@ public class Cars {
 
   public void setSpec(Specs spec) {
     this.spec = spec;
+  }
+
+  @PreRemove
+  public void preRemove() {
+    for (Rentals rental : rentals) {
+      rental.setCar(null);
+    }
+  }
+
+  public void addRental(Rentals rental) {
+    this.rentals.add(rental);
   }
 }

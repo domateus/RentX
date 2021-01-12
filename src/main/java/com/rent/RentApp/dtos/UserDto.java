@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 
 public class UserDto {
 
+  private Long id;
   private String name;
   private byte[] image;
   private String email;
@@ -19,6 +20,7 @@ public class UserDto {
     this.image = user.getImage();
     this.email = user.getEmail();
     this.admin = user.isAdmin();
+    this.id = user.getId();
   }
 
   public static List<UserDto> convert(List<Users> users) {
@@ -63,6 +65,14 @@ public class UserDto {
 
   public static Page<UserDto> convert(Page<Users> users) {
     return users.map(UserDto::new);
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
 }
