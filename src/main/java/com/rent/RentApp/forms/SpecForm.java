@@ -44,15 +44,12 @@ public class SpecForm {
     this.fuelType = fuelType;
   }
 
-  public Specs update(SpecsRepository repository, Long id) {
-    Specs spec = repository.findById(id).get();
+  public Specs update(Specs spec) {
 
     spec.setName(this.name);
     spec.setDescription(this.description);
     spec.setCarType(this.carType);
     spec.setFuelType(this.fuelType);
-
-    repository.save(spec);
 
     return spec;
   }

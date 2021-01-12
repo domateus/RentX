@@ -1,8 +1,9 @@
 package com.rent.RentApp.controllers;
 
+import com.rent.RentApp.dtos.SpecDto;
 import com.rent.RentApp.forms.SpecForm;
 import com.rent.RentApp.models.Specs;
-import com.rent.RentApp.repositories.SpecsRepository;
+import com.rent.RentApp.services.Specs.SpecService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,29 +26,28 @@ import org.springframework.web.bind.annotation.RestController;
 public class SpecsController {
 
   @Autowired
-  private SpecsRepository repository;
+  private SpecService specService;
 
   @GetMapping
-  public Page<Specs> listSpecs(
+  public Page<SpecDto> listSpecs(
       @PageableDefault(sort = "carType", direction = Direction.ASC, page = 0, size = 5) Pageable pagination) {
 
-    Page<Specs> specs = this.repository.findAll(pagination);
+    Page<SpecDto> specs = this.specService.findPages(pagination);
 
     return specs;
   }
 
   @PostMapping
-  public Specs createSpec(@RequestBody SpecForm form) {
-    Specs spec = new Specs(form);
-    this.repository.save(spec);
+  public SpecDto createSpec(@RequestBody SpecForm form) {
+    SpecDto spec = this.specService.create(form);
 
     return spec;
   }
 
   @PutMapping("/{id}")
-  public Specs updateSpec(@PathVariable Long id, @RequestBody SpecForm form) {
+  public SpecDto updateSpec(@PathVariable Long id, @RequestBody SpecForm form) {
 
-    Specs spec = form.update(repository, id);
+    SpecDto spec = this.specService.update(id, form);
 
     return spec;
   }
@@ -55,6 +55,6 @@ public class SpecsController {
   @DeleteMapping("/{id}")
   @ResponseStatus(code = HttpStatus.NO_CONTENT)
   public void deleteSpec(@PathVariable Long id) {
-    this.repository.deleteById(id);
+    this.specService.delete(id);
   }
 }

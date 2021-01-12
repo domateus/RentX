@@ -1,12 +1,10 @@
 package com.rent.RentApp.controllers;
 
-import java.util.Optional;
-
 import javax.validation.Valid;
 
+import com.rent.RentApp.dtos.CarDto;
 import com.rent.RentApp.forms.CarForm;
 import com.rent.RentApp.models.Cars;
-import com.rent.RentApp.repositories.CarsRepository;
 import com.rent.RentApp.services.Cars.CarService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,36 +30,34 @@ import org.springframework.web.bind.annotation.RestController;
 public class CarsController {
 
   @Autowired
-  private CarsRepository carsRepository;
-
-  @Autowired
   private CarService carService;
 
   @GetMapping
-  public Page<Cars> listCars(
+  public Page<CarDto> listCars(
       @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 20) Pageable pagination) {
 
     return this.carService.findPages(pagination);
   }
 
   @PostMapping
-  public Cars createCar(@Valid @RequestBody CarForm form) {
+  public CarDto createCar(@Valid @RequestBody CarForm form) {
+    CarDto car = new CarDto(this.carService.create(form));
 
-    return this.carService.create(form);
+    return car;
   }
 
   @PutMapping("/{id}")
   @Transactional
-  public ResponseEntity<Cars> updateCar(@PathVariable Long id, @Valid @RequestBody CarForm form) {
+  public ResponseEntity<CarDto> updateCar(@PathVariable Long id, @Valid @RequestBody CarForm form) {
     Cars car = this.carService.update(id, form);
 
-    return ResponseEntity.ok(car);
+    return ResponseEntity.ok(new CarDto(car));
 
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(code = HttpStatus.NO_CONTENT)
   public void deleteCar(@PathVariable Long id) {
-    carsRepository.deleteById(id);
+    carService.delete(id);
   }
 }

@@ -4,7 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 
 import com.rent.RentApp.forms.SpecForm;
 
@@ -17,6 +25,9 @@ public class Specs {
   @Id
   @GeneratedValue
   private Long id;
+
+  @OneToMany(mappedBy = "spec", cascade = CascadeType.PERSIST)
+  private List<Cars> cars = new ArrayList<Cars>();
 
   private String name;
 
@@ -110,6 +121,25 @@ public class Specs {
   @PreUpdate
   public void setUpdated_at() {
     this.updated_at = new Date();
+  }
+
+  public List<Cars> getCars() {
+    return cars;
+  }
+
+  public void setCars(List<Cars> cars) {
+    this.cars = cars;
+  }
+
+  public void addCar(Cars car) {
+    this.cars.add(car);
+  }
+
+  @PreRemove
+  private void preRemove() {
+    for (Cars car : cars) {
+      car.setSpec(null);
+    }
   }
 
 }

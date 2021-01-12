@@ -16,7 +16,7 @@ public class Cars {
   @GeneratedValue
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   @JoinColumn(name = "spec_id")
   private Specs spec = new Specs();
 
@@ -40,7 +40,13 @@ public class Cars {
     this.name = form.getName();
     this.brand = form.getBrand();
     this.daily_value = form.getDaily_value();
-    this.setSpecId(form.getSpec_id());
+  }
+
+  public boolean hasSpec() {
+    if (this.spec != null) {
+      return true;
+    }
+    return false;
   }
 
   public void setSpecId(Long id) {
@@ -98,5 +104,13 @@ public class Cars {
   @PreUpdate
   public void setUpdated_at() {
     this.updated_at = new Date();
+  }
+
+  public Specs getSpec() {
+    return spec;
+  }
+
+  public void setSpec(Specs spec) {
+    this.spec = spec;
   }
 }

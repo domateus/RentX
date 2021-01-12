@@ -43,7 +43,6 @@ public class CarForm {
     car.setName(this.name);
     car.setBrand(this.brand);
     car.setDaily_value(this.daily_value);
-    car.setSpecId(this.spec_id);
 
     return car;
   }
