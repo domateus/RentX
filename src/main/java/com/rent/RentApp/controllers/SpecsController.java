@@ -1,5 +1,7 @@
 package com.rent.RentApp.controllers;
 
+import javax.validation.Valid;
+
 import com.rent.RentApp.dtos.SpecDto;
 import com.rent.RentApp.forms.SpecForm;
 import com.rent.RentApp.models.Specs;
@@ -38,14 +40,14 @@ public class SpecsController {
   }
 
   @PostMapping
-  public SpecDto createSpec(@RequestBody SpecForm form) {
+  public SpecDto createSpec(@Valid @RequestBody SpecForm form) {
     SpecDto spec = this.specService.create(form);
 
     return spec;
   }
 
   @PutMapping("/{id}")
-  public SpecDto updateSpec(@PathVariable Long id, @RequestBody SpecForm form) {
+  public SpecDto updateSpec(@PathVariable Long id, @Valid @RequestBody SpecForm form) {
 
     SpecDto spec = this.specService.update(id, form);
 

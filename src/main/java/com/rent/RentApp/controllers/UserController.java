@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import com.rent.RentApp.dtos.UserDto;
 import com.rent.RentApp.forms.UserForm;
-import com.rent.RentApp.repositories.UserRepository;
 import com.rent.RentApp.services.Users.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +29,6 @@ public class UserController {
 
   @Autowired
   private UserService userService;
-
-  @Autowired
-  private UserRepository repository;
 
   @GetMapping
   public Page<UserDto> listUsers(

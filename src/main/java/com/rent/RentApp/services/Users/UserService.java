@@ -8,9 +8,12 @@ import com.rent.RentApp.models.Users;
 import com.rent.RentApp.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserService {
@@ -25,10 +28,16 @@ public class UserService {
   }
 
   public UserDto create(UserForm form) {
-    Users user = new Users(form);
-    this.userRepository.save(user);
+    try {
+      Users user = new Users(form);
+      this.userRepository.save(user);
 
-    return new UserDto(user);
+      return new UserDto(user);
+
+    } catch (DataIntegrityViolationException exc) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already registered");
+
+    }
   }
 
   public UserDto update(UserForm form, Long id) {

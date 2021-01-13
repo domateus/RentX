@@ -1,15 +1,21 @@
 package com.rent.RentApp.forms;
 
+import javax.validation.constraints.NotBlank;
+
+import com.rent.RentApp.configs.exceptions.constraints.NamePattern;
 import com.rent.RentApp.models.CarType;
 import com.rent.RentApp.models.FuelType;
 import com.rent.RentApp.models.Specs;
-import com.rent.RentApp.repositories.SpecsRepository;
 
 public class SpecForm {
 
+  @NotBlank
   private String name;
+  @NotBlank
   private String description;
+  @NamePattern
   private CarType carType;
+  @NamePattern
   private FuelType fuelType;
 
   public String getName() {

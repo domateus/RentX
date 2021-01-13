@@ -1,5 +1,7 @@
 package com.rent.RentApp.controllers;
 
+import javax.validation.Valid;
+
 import com.rent.RentApp.dtos.RentalDto;
 import com.rent.RentApp.forms.RentalForm;
 import com.rent.RentApp.services.Rentals.RentalService;
@@ -36,14 +38,14 @@ public class RentalsController {
   }
 
   @PostMapping
-  public RentalDto createRental(@RequestBody RentalForm form) {
+  public RentalDto createRental(@Valid @RequestBody RentalForm form) {
     RentalDto rental = this.rentalService.create(form);
 
     return rental;
   }
 
   @PutMapping("/{id}")
-  public RentalDto updateRental(@RequestBody RentalForm form, @PathVariable Long id) {
+  public RentalDto updateRental(@Valid @RequestBody RentalForm form, @PathVariable Long id) {
     RentalDto rental = this.rentalService.update(form, id);
 
     return rental;
