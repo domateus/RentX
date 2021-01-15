@@ -6,6 +6,8 @@ import javax.validation.constraints.Size;
 
 import com.rent.RentApp.models.Users;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 public class UserForm {
 
   @NotBlank
@@ -16,6 +18,8 @@ public class UserForm {
   @NotBlank
   @Size(min = 6, max = 30)
   private String password;
+
+  private BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(8);
 
   public String getName() {
     return name;
@@ -34,7 +38,7 @@ public class UserForm {
   }
 
   public String getPassword() {
-    return password;
+    return bcrypt.encode(password);
   }
 
   public void setPassword(String password) {

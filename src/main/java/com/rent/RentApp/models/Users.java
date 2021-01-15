@@ -1,14 +1,17 @@
 package com.rent.RentApp.models;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
@@ -17,9 +20,13 @@ import com.rent.RentApp.forms.UserForm;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-public class Users {
+public class Users implements UserDetails {
+
+  private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,6 +51,9 @@ public class Users {
 
   @OneToMany(mappedBy = "client")
   private List<Rentals> rentals = new ArrayList<Rentals>();
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  private List<Profiles> profiles = new ArrayList<>();
 
   protected Users() {
   };
@@ -129,6 +139,36 @@ public class Users {
   public void addRental(Rentals rental) {
     this.rentals.add(rental);
 
+  }
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return this.profiles;
+  }
+
+  @Override
+  public String getUsername() {
+    return this.email;
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
   }
 
 }
