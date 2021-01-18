@@ -64,6 +64,11 @@ public class Users implements UserDetails {
     this.password = userForm.getPassword();
   }
 
+  public Users(String email, String password) {
+    this.email = email;
+    this.password = password;
+  }
+
   public Long getId() {
     return id;
   }
