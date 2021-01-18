@@ -8,6 +8,9 @@ import com.rent.RentApp.models.Specs;
 import com.rent.RentApp.services.Specs.SpecService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -30,6 +33,7 @@ public class SpecsController {
   @Autowired
   private SpecService specService;
 
+  @Cacheable(value = "specs")
   @GetMapping
   public Page<SpecDto> listSpecs(
       @PageableDefault(sort = "carType", direction = Direction.ASC, page = 0, size = 5) Pageable pagination) {
@@ -39,6 +43,7 @@ public class SpecsController {
     return specs;
   }
 
+  @CacheEvict(value = "specs", allEntries = true)
   @PostMapping
   public SpecDto createSpec(@Valid @RequestBody SpecForm form) {
     SpecDto spec = this.specService.create(form);
@@ -54,6 +59,7 @@ public class SpecsController {
     return spec;
   }
 
+  @CacheEvict(value = "specs", allEntries = true)
   @DeleteMapping("/{id}")
   @ResponseStatus(code = HttpStatus.NO_CONTENT)
   public void deleteSpec(@PathVariable Long id) {

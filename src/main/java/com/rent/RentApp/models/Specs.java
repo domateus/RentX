@@ -1,5 +1,6 @@
 package com.rent.RentApp.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +21,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
-public class Specs {
+public class Specs implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue
